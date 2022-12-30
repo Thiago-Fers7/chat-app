@@ -4,7 +4,6 @@ import { z } from "zod";
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import auth from "../../services/queries/auth";
-import { error } from "console";
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Informe seu usuário'),
@@ -16,12 +15,12 @@ type ILoginForm = z.infer<typeof loginSchema>
 export function LoginForm() {
   const toast = useToast();
 
-  const { register, handleSubmit, formState: { isSubmitting, errors }, setError } = useForm<ILoginForm>({
+  const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm<ILoginForm>({
     resolver: zodResolver(loginSchema),
   })
 
   async function handleLogin({ username, password }: ILoginForm) {
-    const { data, errorMessage, isError } = await auth.login(username, password)
+    const { errorMessage, isError } = await auth.login(username, password)
 
     if (isError) {
       toast({

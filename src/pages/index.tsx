@@ -1,4 +1,4 @@
-import { Container, Box, Text, Heading, HStack, VStack, Button } from '@chakra-ui/react'
+import { Container, Box, Heading, VStack, Button } from '@chakra-ui/react'
 import { useEffect, useRef, useState } from 'react'
 import { Input, MessageList, MessageType } from 'react-chat-elements'
 import { flushSync } from 'react-dom'
@@ -45,7 +45,7 @@ export default function Home() {
 				'Content-Type': 'application/json',
 			}
 		})
-		
+
 		flushSync(() => {
 			setDataSource(prev => [...prev, newMessage])
 		})
