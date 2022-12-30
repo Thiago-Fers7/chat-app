@@ -1,8 +1,9 @@
-import { Button, FormControl, FormErrorMessage, FormHelperText, FormLabel, Icon, Input, VStack } from "@chakra-ui/react";
+import { Button, FormControl, FormErrorMessage, FormLabel, Icon, Input, VStack } from "@chakra-ui/react";
 import { ArrowImport20Filled } from "@fluentui/react-icons";
 import { z } from "zod";
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import auth from "../../services/queries/auth";
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Informe seu usuário'),
@@ -16,9 +17,9 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   })
 
-  async function handleLogin(data: ILoginForm) {
-    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
-    await delay(2000)
+  async function handleLogin({ username, password }: ILoginForm) {
+    const data = await auth.login(username, password)
+
     console.log(data)
   }
 

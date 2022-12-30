@@ -1,6 +1,6 @@
 import { Center, Container, Tab, TabList, TabPanel, TabPanels, Tabs, } from "@chakra-ui/react";
-import { LoginForm } from "../Components/LoginForm";
-import { RegisterForm } from "../Components/RegisterForm";
+import { LoginForm } from "../components/LoginForm";
+import { RegisterForm } from "../components/RegisterForm";
 
 export default function Login() {
   return (
