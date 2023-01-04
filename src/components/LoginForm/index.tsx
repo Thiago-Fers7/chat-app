@@ -4,6 +4,8 @@ import { z } from "zod";
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import auth from "../../services/queries/auth";
+import { useAuth } from "../../contexts/authContext";
+import Router from "next/router";
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Informe seu usuário'),
@@ -13,6 +15,7 @@ const loginSchema = z.object({
 type ILoginForm = z.infer<typeof loginSchema>
 
 export function LoginForm() {
+  const { setUser } = useAuth()
   const toast = useToast();
 
   const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm<ILoginForm>({
@@ -20,7 +23,7 @@ export function LoginForm() {
   })
 
   async function handleLogin({ username, password }: ILoginForm) {
-    const { errorMessage, isError } = await auth.login(username, password)
+    const { data, errorMessage, isError } = await auth.login(username, password)
 
     if (isError) {
       toast({
@@ -34,6 +37,11 @@ export function LoginForm() {
         status: 'success',
         duration: 4000,
       })
+
+      if (data) {
+        setUser(data.user)
+        Router.replace('/')
+      }
     }
   }
 

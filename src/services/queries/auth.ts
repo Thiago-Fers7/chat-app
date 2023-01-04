@@ -1,19 +1,14 @@
+import { IUserData } from "../../@types/user";
 import api from "../utils/api";
 import httpClient from "../utils/httpClient";
 
-interface IResponseData {
+interface ILoginResponseData {
   token: string;
+  user: IUserData;
 }
 
-interface IUserData {
-  _id: string;
-  customId: string;
-  name: string;
-}
-
-interface IResponseData {
-  token: string;
-  user: IUserData & { contacts: IUserData[] };
+interface ILoginWithTokenResponseData {
+  user: IUserData;
 }
 
 class Auth {
@@ -22,7 +17,7 @@ class Auth {
   }
 
   public async login(username: string, password: string) {
-    const response = await httpClient<IResponseData>({
+    const response = await httpClient<ILoginResponseData>({
       method: 'post',
       url: '/auth/authenticate',
       data: { customId: username, password },
@@ -37,6 +32,25 @@ class Auth {
     const token = `Bearer ${data.token}`;
 
     api.defaults.headers.common['Authorization'] = token;
+
+    localStorage.setItem('@token', token);
+
+    return response;
+  }
+
+  public async loginWithToken(token: string) {
+    api.defaults.headers.common['Authorization'] = token;
+
+    const response = await httpClient<ILoginWithTokenResponseData>({
+      method: 'get',
+      url: '/auth/token-authenticate',
+    });
+
+    const { data, isError } = response;
+
+    if (isError || !data) {
+      return response;
+    }
 
     return response;
   }

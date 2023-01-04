@@ -16,6 +16,10 @@ export default async function httpClient<T>(config: AxiosRequestConfig): Promise
   try {
     const response = await api(config);
 
+    const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+    await delay(1000);
+
     const { data } = response as AxiosResponse;
 
     return { data, errorMessage: '', isError: false };
