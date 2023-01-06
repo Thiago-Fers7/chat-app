@@ -1,3 +1,4 @@
+import { setCookie } from "nookies";
 import { IUserData } from "../../@types/user";
 import api from "../utils/api";
 import httpClient from "../utils/httpClient";
@@ -33,7 +34,9 @@ class Auth {
 
     api.defaults.headers.common['Authorization'] = token;
 
-    localStorage.setItem('@token', token);
+    setCookie(null, 'chat@token', token, {
+      maxAge: 60 * 60 * 24 * 1, // 1 day
+    })
 
     return response;
   }

@@ -21,36 +21,36 @@ export function AuthProvider({ children }: IAuthProviderProps) {
     setUser(userData);
   }
 
-  useEffect(() => {
-    async function handle() {
-      const token = localStorage.getItem("@token");
+  // useEffect(() => {
+  //   async function handle() {
+  //     const token = localStorage.getItem("@token");
 
-      if (!token) {
-        if (Router.pathname !== "/login") {
-          Router.push("/login");
-        }
-        return;
-      }
+  //     if (!token) {
+  //       if (Router.pathname !== "/login") {
+  //         Router.push("/login");
+  //       }
+  //       return;
+  //     }
 
-      const { data, isError } = await auth.loginWithToken(token);
+  //     const { data, isError } = await auth.loginWithToken(token);
 
-      if (isError) {
-        Router.push("/login");
-        localStorage.removeItem("@token");
-        return;
-      }
+  //     if (isError) {
+  //       Router.push("/login");
+  //       localStorage.removeItem("@token");
+  //       return;
+  //     }
 
-      if (data) {
-        setUser(data.user);
-      }
+  //     if (data) {
+  //       setUser(data.user);
+  //     }
 
-      if (Router.pathname === "/login") {
-        Router.push("/");
-      }
-    }
+  //     if (Router.pathname === "/login") {
+  //       Router.push("/");
+  //     }
+  //   }
 
-    handle();
-  }, []);
+  //   handle();
+  // }, []);
 
 
   return (
